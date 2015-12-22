@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh_CN">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Getodo</title>
+
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="renderer" content="webkit">    <!-- 强制双核浏览器使用webkit内核 -->
+    <meta http-equiv="Cache-Control" content="no-siteapp"> <!-- 禁止百度手机版转码 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="style.css">
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+    <div id="todo">
+        <header>
+            <h1>{{* title }}</h1>
+        </header>
+
+        <input id="add" v-model="add" v-on:keyup.enter="addNew"/>
+
+        <ul id="todolist">
+            <li v-for="todo in todos" v-bind:class="{ 'itemFinish': todo.itemFinish }">
+                <span>{{ todo.text }}</span>
+
+                <button id="finish" v-on:click="listFinish($index)">√</button>
+                <button id="del" v-on:click="del($index)">x</button>
+            </li>
+        </ul>
+
+    </div>
+    
+    <script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="vue.js"></script>
+    <script src="content.js"></script>
+    <script type="text/javascript">
+
+        var title = 'Getodo - A Vue Todolist App';
+
+        new Vue({
+            el: "#todo",
+            data: {
+                title: title,
+                todos: content
+            },
+            content2json : '',
+            created: function() {
+               this.content2json = JSON.stringify(this.todos);
+               console.log(this.content2json); 
+            },
+            methods: {
+                addNew: function() {
+
+                    var newTodo = this.add.trim()
+
+                    if(newTodo) {
+                        this.todos.push({ text: newTodo, itemFinish: false })
+                    }
+                    this.content2json = JSON.stringify(this.todos);
+                    
+                    this.add = '';
+                    this._update();
+                },
+                listFinish: function(index) {
+
+                    this.todos[index].itemFinish = true;
+                    item = this.$el.getElementsByTagName('li')[index];
+                    item.getElementsByTagName('button')[0].setAttribute('disabled', 'disabled');
+
+                    this.content2json = JSON.stringify(this.todos);
+                    this._update();
+                },
+                del: function(index) {
+                    this.todos.splice(index, 1);
+                    this.content2json = JSON.stringify(this.todos);
+                    this._update();
+                },
+                _update: function() {
+                    $.post('content.php', {content: this.content2json});
+                }
+            },
+            
+        })
+    </script>
+</body>
+</html>
