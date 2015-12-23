@@ -43,7 +43,7 @@
                 <li v-for="todo in todos" v-bind:class="{ 'itemFinish': todo.itemFinish }">
                     <button class="finish" v-on:click="listFinish($index)">√</button>
                     
-                    <span>{{ todo.text }}</span>
+                    <span title="{{ todo.text }}">{{ todo.text }}</span>
 
                     <button class="del" v-on:click="del($index)">x</button>
                 </li>

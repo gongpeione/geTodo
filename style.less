@@ -35,6 +35,10 @@ img { border: 0; max-width: 100%; }
 
 
 /*-----------------[ MAIN ]------------------------*/
+
+@green : #23D457;
+
+
 body {
     height: 100%;
     width: 100%;
@@ -87,7 +91,7 @@ body {
         .input-clear {
             position: absolute;
             display: inline-block;
-            margin-top: -65px;
+            margin-top: -68px;
             margin-left: -40px;
             width: 20px;
             height: 20px;
@@ -97,6 +101,7 @@ body {
             background: #ddd;
             border-radius: 50%;
             text-decoration: none;
+            box-shadow: 0 0 8px 15px #fff;
             color: #fff;
 
             &:hover {
@@ -141,7 +146,8 @@ body {
                     border: none;
                     border-radius: 50%;
                     background: #fff;
-                    border: 1px solid #ccc;
+                    border: 1px solid #ddd;
+                    color: #ddd;
                     font-size: 1rem;
                     line-height: 1.6rem;
                     outline: none;
@@ -154,14 +160,40 @@ body {
                     margin-right: 0;
                     line-height: 1.4rem;
                 }
+                .finish {
+                    color: transparent;
+
+                    &:hover {
+                        border-color: #ccc;
+                        color: #23D457;
+                    }
+                }
                 span {
+                    display: inline-block;
                     font-size: 1rem;
                     line-height: 1.6rem;
+                    max-width: 530px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
 
                 &:hover {
                     .del {
                         display: block;
+                    }
+                }
+            }
+
+            li.itemFinish {
+                .finish {
+                    color: #fff;
+                    background: @green;
+                    border-color: @green;
+
+                    &:hover {
+                        color: #fff;
+                        background: @green;
                     }
                 }
             }
