@@ -23,18 +23,32 @@
     <div id="todo">
         <header>
             <h1>{{* title }}</h1>
+            <p>{{* description }}</p>
         </header>
 
-        <input id="add" v-model="add" v-on:keyup.enter="addNew"/>
+        <section class="container">
+            
+            <div id="top">
+                <input id="add" v-model="add" v-on:keyup.enter="addNew" placeholder="Plese type and press enter"/>
+                <a href="#" class="input-clear" v-on:click="clearInput">x</a>
+            </div>
+            
+            <div class="control">
+                <a id="all" href="javascript:;" v-on:click="showAll">ALL</a>
+                <a id="active" href="javascript:;" v-on:click="showActive">ACTIVE</a>
+                <a id="completed" href="javascript:;" v-on:click="showCom">COMPLETED</a>
+            </div>
 
-        <ul id="todolist">
-            <li v-for="todo in todos" v-bind:class="{ 'itemFinish': todo.itemFinish }">
-                <span>{{ todo.text }}</span>
+            <ul id="todolist">
+                <li v-for="todo in todos" v-bind:class="{ 'itemFinish': todo.itemFinish }">
+                    <button class="finish" v-on:click="listFinish($index)">√</button>
+                    
+                    <span>{{ todo.text }}</span>
 
-                <button id="finish" v-on:click="listFinish($index)">√</button>
-                <button id="del" v-on:click="del($index)">x</button>
-            </li>
-        </ul>
+                    <button class="del" v-on:click="del($index)">x</button>
+                </li>
+            </ul>
+        </section>
 
     </div>
     
@@ -43,12 +57,14 @@
     <script src="content.js"></script>
     <script type="text/javascript">
 
-        var title = 'Getodo - A Vue Todolist App';
+        var title = 'Getodo';
+        var description = 'A Vue Todolist App';
 
         new Vue({
             el: "#todo",
             data: {
                 title: title,
+                description: description,
                 todos: content
             },
             content2json : '',
@@ -57,6 +73,7 @@
                console.log(this.content2json); 
             },
             methods: {
+
                 addNew: function() {
 
                     var newTodo = this.add.trim()
@@ -69,6 +86,7 @@
                     this.add = '';
                     this._update();
                 },
+
                 listFinish: function(index) {
 
                     this.todos[index].itemFinish = true;
@@ -78,11 +96,13 @@
                     this.content2json = JSON.stringify(this.todos);
                     this._update();
                 },
+
                 del: function(index) {
                     this.todos.splice(index, 1);
                     this.content2json = JSON.stringify(this.todos);
                     this._update();
                 },
+
                 _update: function() {
                     $.post('content.php', {content: this.content2json});
                 }
